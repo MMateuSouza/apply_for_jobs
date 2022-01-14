@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <div class="card">
+        <div class="card-header d-flex align-items-center justify-content-between">
+          <div>Senhas Cadastradas</div>
+
+          <a class="btn btn-primary btn-sm" href="{{ url_for('catch_all', path='new_password') }}">Nova Senha</a>
+        </div>
+        <div class="card-body">
+          <table class="table table-responsive table-hover">
+            <thead>
+              <tr class="text-center">
+                <th scope="col">#</th>
+                <th scope="col">Data/Hora de Criação</th>
+                <th scope="col">Data/Hora de Expiração</th>
+                <th scope="col">Quantidade de Visualizações Permitidas</th>
+                <th scope="col">Quantidade de Visualizações Pendentes</th>
+                <th scope="col">Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="text-center">
+                <th scope="row">1</th>
+                <td>
+                  <script>document.write(new Date().toLocaleString())</script>
+                </td>
+                <td>
+                  <script>document.write(new Date().toLocaleString())</script>
+                </td>
+                <td>4</td>
+                <td>1</td>
+                <td>
+                  <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                    data-bs-target="#modal-password-visualization">
+                    <i class="bi bi-eye"></i>
+                  </button>
+                  <button type="button" class="btn btn-primary btn-sm">
+                    <i class="bi bi-link"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <nav aria-label="Page navigation example">
+            <ul class="pagination pagination-sm justify-content-center">
+              <li class="page-item disabled">
+                <a class="page-link" href="#" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              <li class="page-item"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modal-password-visualization" data-bs-backdrop="static" data-bs-keyboard="false"
+  tabindex="-1" aria-labelledby="modal-password-visualizationLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal-password-visualization-label">Visualização de Senhas</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="loader" class="d-none d-flex justify-content-center">
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="{{ url_for('static', filename='index.js') }}"></script>
+{% endblock %}
