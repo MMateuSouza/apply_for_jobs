@@ -19,7 +19,7 @@ def handler(event):
 class PasswordGenerator():
 
     @staticmethod
-    def generate(length, allow_numbers, allow_special_characters, allow_uppercase_letters, allow_lowercase_letters,) -> str:
+    def generate(length, allow_numbers, allow_special_characters, allow_uppercase_letters, allow_lowercase_letters, **kwargs) -> str:
         condition = ""
 
         if allow_numbers:

@@ -24,6 +24,7 @@ class PasswordAPI(MethodView):
             kwargs = {
                 "length": data.get("length", 10),
                 "allow_numbers": data.get("allow_numbers", True),
+                "allow_letters": data.get("allow_letters", True),
                 "allow_special_characters": data.get("allow_special_characters", True),
                 "allow_uppercase_letters": data.get("allow_uppercase_letters", True),
                 "allow_lowercase_letters": data.get("allow_lowercase_letters", True),

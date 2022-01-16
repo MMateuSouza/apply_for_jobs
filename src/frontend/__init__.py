@@ -1,31 +1,32 @@
 from flask import Flask, render_template, request
 
+from .helpers import json_serial
+from .forms import PasswordForm
+
 import json
 import requests
 
 app = Flask(__name__)
 
 
-@app.route("/", defaults={"path": "index"})
-@app.route("/<path:path>/", methods=["GET", "POST"])
-def catch_all(path):
-    try:
-        if path == "new_password" and request.method == "POST":
-            form = request.form
+@app.route("/", methods=["GET", ])
+def index():
+    return render_template("index.html")
 
+
+@app.route("/new_password/", methods=["GET", "POST"])
+def new_password():
+    form = None
+
+    if request.method == "GET":
+        form = PasswordForm()
+
+    elif request.method == "POST":
+        form = PasswordForm(request.form)
+
+        if form.validate():
+            form.data.pop("allow_letters", None)
             headers = {"Content-Type": "application/json"}
-            data = {
-                "description": form.get("description", None),
-                "expires_at": form.get("expires_at", None),
-                "max_value_for_viewing": form.get("max_value_for_viewing", None),
-                "length": int(form.get("length", None)),
-                "allow_numbers": form.get("allow_numbers", None) == "on",
-                "allow_special_characters": form.get("allow_special_characters", None) == "on",
-                "allow_uppercase_letters": form.get("allow_uppercase_letters", None) == "on",
-                "allow_lowercase_letters": form.get("allow_lowercase_letters", None)  == "on",
-            }
-            r = requests.post("http://localhost:5000/passwords/", data=json.dumps(data), headers=headers)
-
-        return render_template(f"{path}.html")
-    except:
-        return "Page not found", 404
+            r = requests.post("http://localhost:5000/passwords/", data=json.dumps(form.data, default=json_serial), headers=headers)
+            print(r.json())
+    return render_template("new_password.html", form=form)
