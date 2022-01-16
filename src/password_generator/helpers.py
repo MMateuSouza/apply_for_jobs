@@ -2,6 +2,20 @@ import string
 import secrets
 
 
+def handler(event):
+    """Signal decorator to allow use of callback functions as class decorators."""
+    # http://docs.mongoengine.org/guide/signals.html#attaching-events
+    def decorator(fn):
+        def apply(cls):
+            event.connect(fn, sender=cls)
+            return cls
+
+        fn.apply = apply
+        return fn
+
+    return decorator
+
+
 class PasswordGenerator():
 
     @staticmethod
