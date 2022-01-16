@@ -26,7 +26,7 @@ class PasswordAPI(MethodView):
                 "allow_numbers": data.get("allow_numbers", True),
                 "allow_special_characters": data.get("allow_special_characters", True),
                 "allow_uppercase_letters": data.get("allow_uppercase_letters", True),
-                "allow_lowercase_letters": data.get("allow_lowercase_letter", True),
+                "allow_lowercase_letters": data.get("allow_lowercase_letters", True),
             }
 
             # Remover os atributos não pertencentes ao documento Password

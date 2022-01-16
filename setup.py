@@ -13,5 +13,6 @@ setup(
         "flask",
         "flask-apscheduler",
         "flask-mongoengine",
+        "requests",
     ],
 )
