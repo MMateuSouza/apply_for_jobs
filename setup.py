@@ -9,6 +9,7 @@ setup(
     packages=find_packages(where="src"),
     package_dir={"": "src"},
     install_requires=[
+        "blinker",
         "flask",
         "flask-apscheduler",
         "flask-mongoengine",

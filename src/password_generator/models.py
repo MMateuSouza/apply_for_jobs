@@ -4,7 +4,7 @@ import uuid
 
 
 class Password(Document):
-    pk = StringField(max_length=36, primary_key=True,
+    id = StringField(max_length=36, primary_key=True,
                      default=str(uuid.uuid4()))
 
     @classmethod
