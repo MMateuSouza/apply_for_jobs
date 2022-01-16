@@ -1,4 +1,6 @@
 # Virtual Environment
 python/
 
-*/__pycache__/*
+__pycache__/
+
+password_generator_microservice.egg-info/
