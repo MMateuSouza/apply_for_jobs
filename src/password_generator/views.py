@@ -43,7 +43,7 @@ class PasswordAPI(MethodView):
             password.save()
             # Retornar todos os campos com excessão do campo senha
             password.password = None
-            return password_serializer(password), 200
+            return password.to_json(), 200
         except Exception as e:
             return {"message": str(e)}, 404
 

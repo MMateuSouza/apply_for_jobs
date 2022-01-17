@@ -33,3 +33,12 @@ class Password(Document):
     def visualize(self):
         self.performed_views += 1
         self.save()
+
+    @staticmethod
+    def delete_expired_passwords():
+        passwords = Password.objects.all()
+        now = datetime.now()
+
+        for password in passwords:
+            if now >= password.expires_at:
+                password.delete()
