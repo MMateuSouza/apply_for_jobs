@@ -1,21 +1,19 @@
 (function () {
-  var modalPasswordVisualization = document.querySelector("#modal-password-visualization");
-  var loader = document.querySelector("#loader");
+  var copyToClipboardButtons = document.querySelectorAll("button.copy-to-clipboard");
 
-  function showOrHideLoader() {
-    let isLoaderDisabled = loader.classList.contains("d-none");
+  copyToClipboardButtons.forEach((el) => {
+    el.addEventListener("click", (event) => {
+      let parentNode = event.target.parentNode;
+      let passwordLinkInput = parentNode.querySelector("input");
+      let passwordLink = passwordLinkInput.value || null;
 
-    isLoaderDisabled && loader.classList.remove("d-none");
-    !isLoaderDisabled && loader.classList.add("d-none");
-  }
+      if (!passwordLink) {
+        alert("Erro ao copiar o link para senha!");
+        return;
+      }
 
-  function generatePasswordSharedLink() {
-    console.log("Generate Password Shared Link")
-  }
-
-  function visualizePassword() {
-    console.log("Password Visualization")
-  }
-
-  modalPasswordVisualization.addEventListener("hidden.bs.modal", () => showOrHideLoader());
+      navigator.clipboard.writeText(passwordLink);
+      alert("Link copiado!");
+    });
+  });
 })();

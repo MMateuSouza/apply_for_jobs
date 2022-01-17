@@ -1,6 +1,7 @@
-from flask import  request, Response
+from flask import  jsonify, request
 from flask.views import MethodView
 
+from .helpers import password_serializer, passwords_serializer
 from .models import Password
 
 
@@ -10,12 +11,14 @@ class PasswordAPI(MethodView):
             try:
                 password = Password.objects.with_id(id)
                 password.visualize()
-                return password.to_json(), 200
+                return password_serializer(password), 200
             except:
                 return {}, 404
 
-        passwords = Password.objects.all().exclude("password")
-        return Response([password.to_json() for password in passwords])
+        data = Password.objects.all().exclude("password")
+        passwords = passwords_serializer(data)
+
+        return jsonify({"passwords": passwords})
 
     def post(self):
         try:
@@ -40,7 +43,7 @@ class PasswordAPI(MethodView):
             password.save()
             # Retornar todos os campos com excessão do campo senha
             password.password = None
-            return password.to_json(), 200
+            return password_serializer(password), 200
         except Exception as e:
             return {"message": str(e)}, 404
 

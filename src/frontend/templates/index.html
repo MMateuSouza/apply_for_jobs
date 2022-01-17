@@ -2,6 +2,14 @@
 
 {% block content %}
 <div class="container">
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  {% for message in messages %}
+  <div class="alert alert-success" role="alert">{{ message }}</div>
+  {% endfor %}
+  {% endif %}
+  {% endwith %}
+
   <div class="row">
     <div class="col">
       <div class="card">
@@ -15,77 +23,38 @@
             <thead>
               <tr class="text-center">
                 <th scope="col">#</th>
+                <th scope="col">Descrição da Senha</th>
                 <th scope="col">Data/Hora de Criação</th>
                 <th scope="col">Data/Hora de Expiração</th>
                 <th scope="col">Quantidade de Visualizações Permitidas</th>
-                <th scope="col">Quantidade de Visualizações Pendentes</th>
+                <th scope="col">Quantidade de Visualizações Realizadas</th>
                 <th scope="col">Ações</th>
               </tr>
             </thead>
             <tbody>
+              {% if passwords %}
+              {% for password in passwords %}
               <tr class="text-center">
-                <th scope="row">1</th>
+                <td scope="col">{{ loop.index }}</td>
+                <td class="text-capitalize">{{ password.description }}</td>
+                <td>{{ password.created_at }}</td>
+                <td>{{ password.expires_at }}</td>
+                <td>{{ password.max_value_for_viewing }}</td>
+                <td>{{ password.performed_views }}</td>
                 <td>
-                  <script>document.write(new Date().toLocaleString())</script>
-                </td>
-                <td>
-                  <script>document.write(new Date().toLocaleString())</script>
-                </td>
-                <td>4</td>
-                <td>1</td>
-                <td>
-                  <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                    data-bs-target="#modal-password-visualization">
-                    <i class="bi bi-eye"></i>
-                  </button>
-                  <button type="button" class="btn btn-primary btn-sm">
-                    <i class="bi bi-link"></i>
-                  </button>
+                  <input type="hidden" value="{{ password.link }}" readonly>
+                  <button class="btn btn-sm btn-link copy-to-clipboard">Copiar link</button>
                 </td>
               </tr>
+              {% endfor %}
+              {% else %}
+              <tr class="text-center">
+                <td colspan="7">Não há senhas cadastradas, para cadastrar <a href="{{ url_for('new_password') }}">clique aqui</a>.</td>
+              </tr>
+              {% endif %}
             </tbody>
           </table>
-
-          <nav aria-label="Page navigation example">
-            <ul class="pagination pagination-sm justify-content-center">
-              <li class="page-item disabled">
-                <a class="page-link" href="#" aria-label="Previous">
-                  <span aria-hidden="true">&laquo;</span>
-                </a>
-              </li>
-              <li class="page-item"><a class="page-link" href="#">1</a></li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
-                  <span aria-hidden="true">&raquo;</span>
-                </a>
-              </li>
-            </ul>
-          </nav>
         </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal fade" id="modal-password-visualization" data-bs-backdrop="static" data-bs-keyboard="false"
-  tabindex="-1" aria-labelledby="modal-password-visualizationLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modal-password-visualization-label">Visualização de Senhas</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div id="loader" class="d-none d-flex justify-content-center">
-          <div class="spinner-border" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
       </div>
     </div>
   </div>
