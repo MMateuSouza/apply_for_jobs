@@ -24,10 +24,10 @@
               <tr class="text-center">
                 <th scope="col">#</th>
                 <th scope="col">Descrição da Senha</th>
-                <th scope="col">Data/Hora de Criação</th>
-                <th scope="col">Data/Hora de Expiração</th>
-                <th scope="col">Quantidade de Visualizações Permitidas</th>
-                <th scope="col">Quantidade de Visualizações Realizadas</th>
+                <th scope="col">Criada em</th>
+                <th scope="col">Expira em</th>
+                <th scope="col">Visualizações Permitidas</th>
+                <th scope="col">Visualizações Realizadas</th>
                 <th scope="col">Ações</th>
               </tr>
             </thead>
@@ -62,5 +62,5 @@
 {% endblock %}
 
 {% block script %}
-<script src="{{ url_for('static', filename='index.js') }}"></script>
+<script src="{{ url_for('static', filename='js/index.js') }}"></script>
 {% endblock %}
