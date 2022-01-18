@@ -1,5 +1,6 @@
 from flask import flash, Flask, redirect, render_template, request, url_for
 
+from .config import Config
 from .helpers import json_serial
 from .forms import PasswordForm
 
@@ -7,12 +8,12 @@ import json
 import requests
 
 app = Flask(__name__)
-app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
+app.config.from_object(Config())
 
 
 @app.route("/", methods=["GET", ])
 def index():
-    r = requests.get("http://localhost:5000/passwords/")
+    r = requests.get(app.config["PASSWORDS_API"])
     data = r.json()
     passwords = data["passwords"] if "passwords" in data else []
     return render_template("index.html", passwords=passwords)
@@ -31,7 +32,7 @@ def new_password():
         if form.validate():
             form.data.pop("allow_letters", None)
             headers = {"Content-Type": "application/json"}
-            r = requests.post("http://localhost:5000/passwords/", data=json.dumps(form.data, default=json_serial), headers=headers)
+            r = requests.post(app.config["PASSWORDS_API"], data=json.dumps(form.data, default=json_serial), headers=headers)
 
             if r.status_code == 200:
                 flash("Senha cadastrada com sucesso!")

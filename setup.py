@@ -2,7 +2,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="password-generator-microservice",
-    description="",
+    description="Apply For Jobs - TOTVs",
     version="1.0.0",
     author="Mateus Souza",
     author_email="mota.mateus13@gmail.com",
@@ -13,6 +13,7 @@ setup(
         "flask",
         "flask-apscheduler",
         "flask-mongoengine",
+        "python-dotenv",
         "requests",
     ],
 )
