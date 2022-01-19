@@ -7,3 +7,6 @@ password_generator_microservice.egg-info/
 
 # Environment Variables
 .env
+
+# Data Directory
+data/

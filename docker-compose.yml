@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+  mongo:
+    image: mongo:latest
+    container_name: password-generator-mongo
+    restart: always
+    user: 1000:1000
+    environment:
+      - MONGO_INITDB_DATABASE=${MONGODB_HOST}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_USERNAME}
+      - MONGO_INITDB_ROOT_USERNAME=${MONGODB_PASSWORD}
+    volumes:
+      - ./data/mongo:/data/db
+    networks:
+      - password-generator-network
+  backend:
+    build: .
+    container_name: password-generator-backend
+    environment:
+      - FLASK_APP=password_generator
+      - FLASK_ENV=${FLASK_ENV}
+      - FLASK_DEBUG=${FLASK_DEBUG}
+    depends_on:
+      - mongo
+    ports:
+      - '5000:5000'
+    networks:
+      - password-generator-network
+  frontend:
+    build: .
+    container_name: password-generator-frontend
+    environment:
+      - FLASK_APP=frontend
+      - FLASK_ENV=${FLASK_ENV}
+      - FLASK_DEBUG=${FLASK_DEBUG}
+    depends_on:
+      - backend
+    ports:
+      - '80:5000'
+    networks:
+      - password-generator-network
+
+networks:
+  password-generator-network:
+    driver: bridge
