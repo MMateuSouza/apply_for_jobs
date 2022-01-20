@@ -57,7 +57,7 @@ A persistência dos dados é utilizando o **MongoDB**.
 
 **#03**: Ao criar a senha é gerado um *UUID4* de 36 caracteres, onde ele é utilizado para ser o identificador único de cada senha. No *frontend*, após criar a senha, é possível clicar no botão `Copiar link` e é automaticamente colocado na área de transferência do usuário.
 
-**Ponto de atenção**: Se o projeto estiver executado com o *Docker*, será necessário sustituir o identificador do *container* (`password-generator-backend`) pelo *host* da máquina (*localhost*, 127.0.0.1, etc).
+**Ponto de atenção**: Se o projeto estiver executado com o *Docker*, será necessário sustituir o identificador do *container* (`password-generator-backend`) pelo *host* da máquina (*localhost*, 127.0.0.1, etc). Ex.: http://password-generator-backend:5000/passwords/ por http://localhost:5000/passwords/.
 
 **#04**: São realizadas duas verificações para o cumprimento deste requisito, abaixo serão descritos:
 

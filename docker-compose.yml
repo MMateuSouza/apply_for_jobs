@@ -5,7 +5,6 @@ services:
     image: mongo:latest
     container_name: password-generator-mongo
     restart: always
-    user: 1000:1000
     environment:
       - MONGO_INITDB_DATABASE=${MONGODB_HOST}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_USERNAME}
