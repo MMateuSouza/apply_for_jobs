@@ -16,7 +16,7 @@ def validate_view_limit(sender, document, **kwargs):
 
 @validate_view_limit.apply
 class Password(Document):
-    id = StringField(max_length=36, primary_key=True, default=str(uuid.uuid4()))
+    id = StringField(max_length=36, primary_key=True)
     description = StringField(required=True)
     password = StringField(required=True)
     performed_views = IntField(min_value=0, default=0)
@@ -26,6 +26,8 @@ class Password(Document):
 
     def __init__(self, *args, **values):
         super().__init__(*args, **values)
+        if not self.id:
+            self.id = str(uuid.uuid4())
 
     def set_password(self, **kwargs):
         self.password = PasswordGenerator.generate(**kwargs)
