@@ -1,38 +1,103 @@
-# Avaliação de conhecimentos em Desenvolvimento de Software
+# Password Generator
 
-## Considere a seguinte necessidade:
- 
-Precisamos enviar uma senha de maneira segura para um cliente. Para isso, ao invés de encaminhá-la via E-mail, SMS, Slack, etc, foi dado como solução o desenvolvimento de um sistema com as seguintes funções:
- 
-1- Sistema gera <strong>senha aleatória</strong> baseada em <strong>políticas de complexidade</strong> (tipo de caracteres, números, letras, tamanho, etc); 
-- **Exemplo**: o usuário ao clicar no botão "Gerar Senha" irá obter uma senha aleatória;
+## Sumário
 
-2- Usuário irá especificar <strong>quantas vezes</strong> a senha gerada poderá ser vista e <strong>qual o tempo</strong> que a senha ficará válida;
-- **Exemplo**: o usuário irá especificar que a senha possa ser vista apenas <em>duas vezes</em> pelo prazo de <em>um dia</em>;
+- [Password Generator](#password-generator)
+  - [Sumário](#sumário)
+  - [Requisitos](#requisitos)
+  - [*Design*](#design)
+  - [Estrutura do Projeto](#estrutura-do-projeto)
+  - [Tecnologias Utilizadas](#tecnologias-utilizadas)
+  - [Ferramentas Utilizadas](#ferramentas-utilizadas)
+  - [Execução do Projeto (*Docker Compose*)](#execução-do-projeto-docker-compose)
 
-3- O sistema irá <strong>gerar uma URL</strong> que dá acesso a visualização da senha, baseando-se nos critérios do item 02;
-- **Exemplo**: o usuário enviará a URL para que o cliente possa visualizar a senha;
+## Requisitos
 
-4- Após atingir a quantidade de visualizações ou o tempo disponível, o sistema <strong>bloqueia/elimina</strong> a visualização da senha (expirado).
-A senha <strong>não deve ser armazenada</strong> após sua expiração
+1. Sistema gera senha aleatória baseada em políticas de complexidade (tipo de caracteres, números, letras, tamanho, etc);
+    - Exemplo: o usuário ao clicar no botão "Gerar Senha" irá obter uma senha aleatória;
+2. Usuário irá especificar quantas vezes a senha gerada poderá ser vista e qual o tempo que a senha ficará válida;
+    - Exemplo: o usuário irá especificar que a senha possa ser vista apenas duas vezes pelo prazo de um dia;
+3. O sistema irá gerar uma URL que dá acesso a visualização da senha, baseando-se nos critérios do item 02;
+    - Exemplo: o usuário enviará a URL para que o cliente possa visualizar a senha;
+4. Após atingir a quantidade de visualizações ou o tempo disponível, o sistema bloqueia/elimina a visualização da senha (expirado). A senha não deve ser armazenada após sua expiração.
 
-## Design
+## *Design*
 
-1 - <strong>Monte um desenho</strong> com a arquitetura desse sistema, considerando todos os <strong>componentes e tecnologias</strong> necessárias para o seu correto funcionamento. Considere essa topologia utilizando, obrigatoriamente, provedores de nuvens públicas trabalhando com o <strong>conceito de serverless</strong>. Escolha a nuvem que tiver mais conforto em trabalhar (AWS, GCP, Azure, etc)
- 
-2 - Avalie quais <strong>controles de segurança</strong> são pertinentes para esse sistema, com o objetivo de protegê-lo ao máximo, evitando vazamento de dados (ex: considere o <strong>OWASP Top10</strong>). Questões de auditoria e logging são importantes também. 
- 
-3 - Explique como atender cada uma das 4 funções elencadas acima (requisítos) e o racional de sua decisão. Ex: A senha aleatória será gerada no front-end por xyz, ou será gerada com uma função no backend por abc.
+<!-- Explicar os tópicos propostos da aplicação -->
 
-4 - Sinta-se livre para adicionar seus comentários de novas melhorias que você julgar desejável. A TOTVS estimula a criatividade e a liberdade de expressão!
- 
-Faça uma sucinta explicação sobre o racional do seu desenho.
+## Estrutura do Projeto
 
-Essa documentação pode ser entregue em um arquivo pdf ou como parte da documentação no repositório (Arquivos MarkDown com topologia no Draw.io, etc)
+```bash
+.
+├── Dockerfile
+├── LICENSE
+├── README.md
+├── docker-compose.yml
+├── requirements.txt
+├── setup.py
+├── src
+│   ├── frontend
+│   │   ├── __init__.py
+│   │   ├── config.py
+│   │   ├── forms.py
+│   │   ├── helpers.py
+│   │   ├── static
+│   │   │   ├── css
+│   │   │   │   └── base.css
+│   │   │   └── js
+│   │   │       ├── index.js
+│   │   │       └── new_password.js
+│   │   └── templates
+│   │       ├── base.html
+│   │       ├── index.html
+│   │       └── new_password.html
+│   └── password_generator
+│       ├── __init__.py
+│       ├── config.py
+│       ├── helpers.py
+│       ├── models.py
+│       ├── tasks.py
+│       ├── urls.py
+│       └── views.py
+└── startup.sh
 
-## Implementação
+7 directories, 24 files
+```
 
-Faça um Fork desse repositório, Crie uma branch com seu nome (ex: application/jose_silas_santos_pereira). 
-Envie um PR nesse repositorio do GitHub contendo as implementações do projeto com base na arquitetura descrita que você desenvolveu de <strong>pelo menos um dos componentes</strong> do sistema (Queremos avaliar sua lógica de programação e estruturação do código. Não é necessário desenvolver todos os componentes). 
+## Tecnologias Utilizadas
 
-Para testar as implementações de seu projeto antes de enviar, recomendamos o uso do free tier das nuvens públicas ou projetos que emulem localmente tais nuvens como o localstack (https://github.com/localstack/localstack).
+- Python 3.8
+- Jinja2, HTML5, CSS3, Javascript
+- Flask 2.0.2
+- MongoDB *latest*
+- Docker 20.10.11
+- Docker Compose 1.29.2
+
+## Ferramentas Utilizadas
+
+- _Windows 10_
+- _Ubuntu 20.04 LTS (WSL2)_
+- _Visual Studio Code_
+
+## Execução do Projeto (*Docker Compose*)
+
+Gerar o _build_ do projeto a partir do arquivo _docker-compose.yml_:
+
+```sh
+    docker-compose build
+```
+
+Iniciar os containers do _MongoDB_, _Backend_ e _Frontend_ de forma desacoplada:
+
+```sh
+    # No Linux
+    chmod +x startup.sh
+    bash startup.sh
+
+    # Em outros SOs
+    docker-compose up -d
+```
+
+O *frontend* estará disponível em [http://localhost/](http://localhost/).
+
+Para a API de senhas utilizar [http://localhost:5000/passwords/](http://localhost:5000/passwords/).
