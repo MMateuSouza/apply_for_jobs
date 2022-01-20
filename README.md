@@ -6,6 +6,8 @@
   - [Sumário](#sumário)
   - [Requisitos](#requisitos)
   - [*Design*](#design)
+    - [Arquitetura do Projeto](#arquitetura-do-projeto)
+    - [Descrição dos Requisitos](#descrição-dos-requisitos)
   - [Estrutura do Projeto](#estrutura-do-projeto)
   - [Tecnologias Utilizadas](#tecnologias-utilizadas)
   - [Ferramentas Utilizadas](#ferramentas-utilizadas)
@@ -23,7 +25,44 @@
 
 ## *Design*
 
-<!-- Explicar os tópicos propostos da aplicação -->
+### Arquitetura do Projeto
+
+A imagem a seguir descreve a arquitetura da aplicação, adotando uma arquitetura *serverless* onde cada componente da aplicação é divido em serviços (Arquitetura de microserviços).
+
+De uma forma abstrata o item ***cloud*** pode ser substituído por qualquer provedor de computação em nuvem.
+
+Uma forma de simular esta arquitetura foi utilizado *Docker Compose*, onde cada serviço possui um *container* distinto.
+
+O *Frontend* realiza requisições HTTP ao *Backend* para as rotas de listagem, obtenção e criação de senhas.
+
+A persistência dos dados é utilizando o **MongoDB**.
+
+![Password Generator Architecture](./docs/password-generator.png "Password Generator Architecture")
+
+### Descrição dos Requisitos
+
+**#01**: No diretório `src/password_generator/helpers.py` é possível identificar uma classe denominada `PasswordGenerator` que possui a responsabilidade única e exclusiva de gerar as senhas de acordo com os critérios enviados. Os seguintes critérios são utilizados para geração da senha:
+
+- Comprimento da Senha
+- É permitido caracteres numéricos?
+- É permitido caracteres especiais?
+- É permitido caracteres alfabéticos? Se sim:
+  - Maiúsculos?
+  - Minúsculos?
+
+**#02**: Ao realizar a criação de uma nova senha, é necessário especificar a data de expiração e a quantidade máxima de visualizações.
+
+- Data de Expiração: **Obrigatoriamente** precisa ser maior que a data/hora corrente.
+- Quantidade Máxima de Visualizações: **Obrigatoriamente** no mínimo 1 (uma) visualização.
+
+**#03**: Ao criar a senha é gerado um *UUID4* de 36 caracteres, onde ele é utilizado para ser o identificador único de cada senha. No *frontend*, após criar a senha, é possível clicar no botão `Copiar link` e é automaticamente colocado na área de transferência do usuário.
+
+**Ponto de atenção**: Se o projeto estiver executado com o *Docker*, será necessário sustituir o identificador do *container* (`password-generator-backend`) pelo *host* da máquina (*localhost*, 127.0.0.1, etc).
+
+**#04**: São realizadas duas verificações para o cumprimento deste requisito, abaixo serão descritos:
+
+- **Quantidade máxima de visualizações:** Cada acesso ao *link* da senha é efetuado um incremento na quantidade de visualizações realizadas e automaticamente comparado com a quantidade máxima de visualizações, se esta condição for atendida, realizar automaticamente a exclusão. Este requisito foi atendido com o auxílio dos *Signals* do *MongoEngine*, onde é possível disparar um evento a cada operação realizada em um documento, neste caso uma atualização no documento.
+- **Expiração por data/hora:** Utilizando *Flask-APScheduler* foi adicionado uma *task* que valida a cada **minuto** se uma senha foi expirada, se sim, é automaticamente excluída da base. Esta decisão foi tomada visto que pode-se cadastrar senhas com as horas quebradas, por exemplo, 20/01/2022 às 12:56.
 
 ## Estrutura do Projeto
 
